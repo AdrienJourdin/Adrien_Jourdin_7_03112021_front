@@ -1,1 +1,23 @@
-<p>login works!</p>
+<div class="col-sm-8 col-sm-offset-2" >
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmitForm()" *ngIf="userAuth==false">
+    <div class="form-group">
+
+
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="text" class=form-control id="email" formControlName="email">
+    </div>
+
+    <div class="form-group">
+      <label for="password">Mot de passe</label>
+      <input type="password" class=form-control id="password" formControlName="password">
+    </div>
+
+    </div>
+    <button class="btn btn-primary" type="submit">S'identifier</button>
+  </form>
+  <div class="col-sm-8">{{messageErreur}}</div>
+  <div *ngIf="userAuth" >Vous etes déjà connectés</div>
+</div>
+
+

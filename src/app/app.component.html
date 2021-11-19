@@ -2,9 +2,12 @@
   <div class="container-fluid">
     <div class="navbar-collapse">
       <ul class="nav navbar-nav">
-        <li><a routerLink="signup">S'inscrire</a></li>
-        <li><a routerLink="login">S'identifier</a></li>
-        <li class="active"><a routerLink="posts">Publications</a></li>
+        <li><a routerLink="signup" *ngIf="isAuth==false">S'inscrire</a></li>
+        <li><a routerLink="login" *ngIf="isAuth==false">S'identifier</a></li>
+        <li ><a routerLink="posts" *ngIf="isAuth">Publications</a></li>
+        <li><a routerLink="users" *ngIf="isAuth">Liste des collaborateurs</a></li>
+        <li><a routerLink="profil" *ngIf="isAuth">Profil</a></li>
+
       </ul>
     </div>
   </div>
@@ -12,6 +15,7 @@
 <div class="container">
   <div class="row">
     <div class="col-xs-12">
+      <app-alert></app-alert>
       <router-outlet></router-outlet>
     </div>
   </div>

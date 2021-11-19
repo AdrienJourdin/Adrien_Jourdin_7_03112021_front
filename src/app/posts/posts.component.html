@@ -1,15 +1,138 @@
-<app-post
-  *ngFor="let post of posts; let i = index"
-  [postName]="post.title"
-  [postContent]="post.content"
-  [postDate]="post.createdAt"
-  [index]="i"
-  [id]="post.id"
+<!-- La page des publications-->
+<div >
+  <!--Le formulaire de création des publications -->
+  <div>
+    <form [formGroup]="postForm" (ngSubmit)="onSubmitPostForm()">
+      <div class="form-group">
+        <label for="title">Titre</label>
+        <input
+          type="text"
+          class="form-control"
+          id="title"
+          formControlName="title"
+        />
+      </div>
 
->
-<p>{{post.title}}</p>
-<p>{{post.content}}</p>
-<p>{{post.id}}</p>
+      <div class="form-group">
+        <label for="content">Contenu</label>
+        <input
+          type="text"
+          class="form-control"
+          id="content"
+          formControlName="content"
+        />
+      </div>
 
-</app-post>
-<p>Bonjour</p>
+      <button class="btn btn-primary" type="submit">Publier</button>
+    </form>
+  </div>
+<!--LA liste des publications -->
+  <ul class="list-group">
+    <li class="list-group-item" *ngFor="let post of posts">
+      <!-- Le contenu de la publication-->
+      <h3>{{ post.title }}</h3>
+      <p>{{ post.content }}</p>
+      <p>de {{ post.user.firstName }} {{ post.user.lastName }}</p>
+
+      <div>{{ post.likes.length }}</div>
+
+
+      <!--Le bouton de like -->
+      <button type="submit" (click)="likeSubmit(post.id)" class="btn">
+        Like
+      </button>
+
+      <!--Les boutons de suppression/modification du post (si vous etes l'auteur) -->
+      <button type="submit" (click)="deletePost(post.id)" *ngIf="loadButton(post.user.id)" class="btn btn-danger">
+        Supprimer le post
+      </button>
+
+      <div *ngIf="loadButton(post.user.id) && displayDeletePostButton(post.id)">Voulez-vous vraiment supprimer cette publication ?</div>
+      <button type="submit" (click)="deletePostConfirmation(post.id)" *ngIf="loadButton(post.user.id) && displayDeletePostButton(post.id)" class="btn btn-danger">
+       Confirmer la suppression de la publication
+      </button>
+
+      <button type="submit" (click)="updatePost(post.id)" *ngIf="loadButton(post.user.id)" class="btn btn-primary">
+        Modifier la publication
+      </button>
+
+      <form [formGroup]="updatePostForm" (ngSubmit)="onSubmitUpdatePostForm(post.id)" *ngIf="displayUpdatePostButton(post.id)">
+        <div class="form-group">
+          <label for="title">Titre</label>
+          <input
+            type="text"
+            class="form-control"
+            id="title"
+            formControlName="title"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="content">Contenu</label>
+          <input
+            type="text"
+            class="form-control"
+            id="content"
+            formControlName="content"
+          />
+        </div>
+
+        <button class="btn btn-primary" type="submit">Publier la modification</button>
+      </form>
+
+
+
+      <!--Le formulaire pour poster un commentaire-->
+      <form [formGroup]="commentForm" (ngSubmit)="onSubmitCommentForm(post.id)" >
+
+        <div class="form-group">
+          <label for="content">Rediger un commentaire</label>
+          <input
+            type="text"
+            class="form-control"
+            id="content"
+            formControlName="content"
+          />
+        </div>
+        <button class="btn btn-primary" type="submit">Publier</button>
+      </form>
+
+<!-- La liste des commentaires -->
+      <div *ngFor="let comment of post.comments">
+        <p>{{ comment.content }}</p>
+        <p>de {{ comment.user.firstName }} {{ comment.user.lastName }}</p>
+
+        <form [formGroup]="updateCommentForm" (ngSubmit)="onSubmitUpdateCommentForm(comment.id)" *ngIf="displayUpdateCommentButton(comment.id)">
+          <div class="form-group">
+            <label for="content">Modification du commentaire</label>
+            <input
+              type="text"
+              class="form-control"
+              id="content"
+              formControlName="content"
+            />
+          </div>
+
+          <button class="btn btn-primary" type="submit">Publier la modification</button>
+        </form>
+        <!--Les boutons de modif/supp des commentaires (si vous etes l'auteur du comment)-->
+        <button type="submit" (click)="deleteComment(comment.id)" *ngIf="loadButton(comment.user.id)" class="btn btn-danger">
+          Supprimer le commentaire
+        </button>
+
+        <div *ngIf="loadButton(comment.user.id) && displayDeleteCommentButton(comment.id)">Voulez-vous vraiment supprimer votre commentaire ?</div>
+        <button type="submit" (click)="deleteCommentConfirmation(comment.id)" *ngIf="loadButton(comment.user.id) && displayDeleteCommentButton(comment.id)" class="btn btn-danger">
+         Confirmer la suppression du commentaire
+        </button>
+
+        <button type="submit" (click)="updateComment(comment.id)" *ngIf="loadButton(comment.user.id)" class="btn btn-primary">
+          Modifier le commentaire
+        </button>
+
+
+
+      </div>
+
+    </li>
+  </ul>
+</div>

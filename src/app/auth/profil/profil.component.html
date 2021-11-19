@@ -1,0 +1,52 @@
+<div class="col-md-4">
+
+  <div>
+    <div>
+      {{oneUser.firstName}}
+    </div>
+    <div>
+      {{oneUser.lastName}}
+    </div>
+    <div>
+      {{oneUser.email}}
+    </div>
+  </div>
+
+  <div class="col-sm-8 col-sm-offset-2" *ngIf="updateisActive">
+    <form [formGroup]="updateUserForm" (ngSubmit)="onSubmitForm()">
+      <div class="form-group">
+        <label for="firstName">Prénom</label>
+        <input type="text" class=form-control id="firstName" formControlName="firstName">
+      </div>
+
+      <div class="form-group">
+        <label for="lastName">Nom</label>
+        <input type="text" class=form-control id="lastName" formControlName="lastName">
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="text" class=form-control id="email" formControlName="email">
+      </div>
+
+      <div class="form-group">
+        <label for="password">Mot de passe</label>
+        <input type="password" class=form-control id="password" formControlName="password">
+      </div>
+
+      <button class="btn btn-primary" type="submit" [disabled]="updateUserForm.invalid">Envoi des modifications</button>
+    </form>
+    </div>
+
+
+<button class='btn btn-primary' (click)="activeUpdate()">
+Modifier votre profil
+</button>
+
+<button class='btn btn-primary' (click)="deleteUserConfirmation()" *ngIf="!deleteConfirmation">Supprimer votre Profil</button>
+<div *ngIf="deleteConfirmation">Etes -vous sur de vouloir supprimer votre profil ? Cette action est définitive.</div>
+<button class='btn btn-primary' (click)="deleteUser()" *ngIf="deleteConfirmation">Confirmer la suppression de votre profil</button>
+
+
+<button class="btn btn-danger" (click)="logout()">Se deconnecter</button>
+</div>
