@@ -31,7 +31,6 @@ export class PostsService {
       (posts) => {
         this.posts = posts;
         this.emitPosts();
-        console.log('Chargement des posts terminé');
       },
       (error) => {
         console.log('Erreur ! : ' + error);
@@ -39,8 +38,17 @@ export class PostsService {
     );
   }
 
-  postToAPI(post: Object) {
-    this.httpClient.post(this.urlAPI + 'post', post).subscribe(
+  postToAPI(post: string, imagePost: File) {
+
+    if (post == null && imagePost == null) {
+      return this.alertService.error('Publication vide');
+    }
+    const postFormData = new FormData();
+
+      postFormData.append('post', post);
+      postFormData.append('image', imagePost);
+      console.log(postFormData.get('image'));
+    this.httpClient.post(this.urlAPI + 'post', postFormData).subscribe(
       () => {
         this.alertService.success('Le post a bien été publié');
       },
@@ -101,7 +109,7 @@ export class PostsService {
 
   updateComment(commentId: number, content: string) {
     this.httpClient
-      .put(this.urlAPI + 'post/comment/' + commentId,  {content:content})
+      .put(this.urlAPI + 'post/comment/' + commentId, { content: content })
       .subscribe({
         next: (data) => {
           this.alertService.success('Le commentaire a bien été modifié');
@@ -113,13 +121,15 @@ export class PostsService {
   }
 
   deleteComment(commentId: number) {
-    this.httpClient.delete(this.urlAPI + 'post/comment/' + commentId).subscribe({
-      next: (data) => {
-        this.alertService.success('Le commentaire a bien été supprimé');
-      },
-      error: (error) => {
-        this.alertService.error(error.message);
-      },
-    });
+    this.httpClient
+      .delete(this.urlAPI + 'post/comment/' + commentId)
+      .subscribe({
+        next: (data) => {
+          this.alertService.success('Le commentaire a bien été supprimé');
+        },
+        error: (error) => {
+          this.alertService.error(error.message);
+        },
+      });
   }
 }

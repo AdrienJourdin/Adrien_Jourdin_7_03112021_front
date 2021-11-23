@@ -19,10 +19,12 @@ import { UserListComponent } from './user-list/user-list.component';
 import { CoreModule } from './core/core.module';
 import { ProfilComponent } from './auth/profil/profil.component';
 import { AlertComponent } from './alert/alert.component';
+import { PostFormComponent } from './posts/post-form/post-form.component';
+import { CommentFormComponent } from './posts/comment-form/comment-form.component';
 
 
 const appRoutes: Routes = [
-  { path: 'posts', canActivate: [AuthGuard], component: PostsComponent },
+  { path: 'posts', component: PostsComponent },
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
   { path: '', canActivate: [AuthGuard],component: PostsComponent },
@@ -44,6 +46,8 @@ const appRoutes: Routes = [
     UserListComponent,
     ProfilComponent,
     AlertComponent,
+    PostFormComponent,
+    CommentFormComponent,
   ],
   imports: [
     BrowserModule,

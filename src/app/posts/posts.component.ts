@@ -18,8 +18,6 @@ import { AuthService } from '../services/auth.service';
   styleUrls: ['./posts.component.sass'],
 })
 export class PostsComponent implements OnInit {
-  postForm!: FormGroup;
-  commentForm!: FormGroup;
   updatePostForm!: FormGroup;
   updateCommentForm!: FormGroup;
 
@@ -56,13 +54,7 @@ export class PostsComponent implements OnInit {
   }
 
   initForm() {
-    this.commentForm = this.formBuilder.group({
-      content: ['', Validators.required],
-    });
-    this.postForm = this.formBuilder.group({
-      title: ['', Validators.required],
-      content: ['', Validators.required],
-    });
+
 
     this.updatePostForm = this.formBuilder.group({
       title: [, Validators.required],
@@ -74,29 +66,13 @@ export class PostsComponent implements OnInit {
     });
   }
 
-  onSubmitCommentForm(id: number) {
-    const formValue = this.commentForm.value;
-    const newComment = {
-      content: formValue['content'],
-    };
-    this.postsService.postComment(id, newComment);
-    location.reload();
-    this.alertService.success('Votre commentaire a bien été publié');
-  }
-
-  onSubmitPostForm() {
-    const formValue = this.postForm.value;
-    const newPost = {
-      title: formValue['title'],
-      content: formValue['content'],
-    };
-    this.postsService.postToAPI(newPost);
-    location.reload();
-  }
 
   //Gestion des bouton de suppression et de modification des publications
   loadButton(userId: string) {
-    if (userId == this.authService.currentUserValue.userId) {
+    if(this.authService.currentUserValue.role==="admin"){
+      return true;
+    }
+    else if (userId == this.authService.currentUserValue.userId) {
       return true;
     } else {
       return false;
@@ -112,6 +88,7 @@ export class PostsComponent implements OnInit {
   }
 
   displayDeletePostButton(postId:number){
+
     if (this.idPostToDelete===postId){
       return true;
     }else{
@@ -133,6 +110,7 @@ export class PostsComponent implements OnInit {
   }
 
   displayUpdatePostButton(postId:number){
+
     if (this.idPostToUpdate===postId){
       return true;
     }else{
@@ -172,6 +150,7 @@ export class PostsComponent implements OnInit {
   }
 
   displayDeleteCommentButton(commentId:number){
+
     if (this.idCommentToDelete===commentId){
       return true;
     }else{
@@ -193,6 +172,7 @@ export class PostsComponent implements OnInit {
   }
 
   displayUpdateCommentButton(commentId:number){
+
     if (this.idCommentToUpdate===commentId){
       return true;
     }else{

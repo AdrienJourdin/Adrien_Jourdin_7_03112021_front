@@ -1,35 +1,110 @@
 <div class="col-sm-8 col-sm-offset-2">
-  <form [formGroup]="userForm" (ngSubmit)="onSubmitForm()" *ngIf="userAuth==false">
+  <form
+    [formGroup]="userForm"
+    (ngSubmit)="onSubmitForm()"
+    *ngIf="userAuth == false"
+  >
     <div class="form-group">
       <label for="firstName">Prénom</label>
-      <input type="text" class=form-control id="firstName" formControlName="firstName">
+      <input
+        type="text"
+        class="form-control"
+        id="firstName"
+        formControlName="firstName"
+      />
     </div>
 
     <div class="form-group">
       <label for="lastName">Nom</label>
-      <input type="text" class=form-control id="lastName" formControlName="lastName">
+      <input
+        type="text"
+        class="form-control"
+        id="lastName"
+        formControlName="lastName"
+      />
     </div>
 
     <div class="form-group">
       <label for="email">Email</label>
-      <input type="text" class=form-control id="email" formControlName="email">
+      <input
+        type="text"
+        class="form-control"
+        id="email"
+        formControlName="email"
+      />
     </div>
 
     <div class="form-group">
       <label for="password">Mot de passe</label>
-      <input type="password" class=form-control id="password" formControlName="password">
+      <input
+        type="password"
+        class="form-control"
+        id="password"
+        formControlName="password"
+      />
     </div>
+
+    <!--Prévisualisation de la photo de profil-->
+    <div class="imagePreview mb-3" *ngIf="imageUser && imageUser !== ''">
+      <img
+        [src]="imageUser"
+        class="imgPreview"
+        alt="image preview"
+        width="100"
+        height="100"
+      />
+    </div>
+
+    <!--Choix de l'image-->
+    <button
+      class="btn btn-primary"
+      type="button"
+      onclick="document.getElementById('imageUser').click()"
+    >
+      Ajouter une photo de profil
+    </button>
+    <input
+      type="file"
+      accept="image/*"
+      id="imageUser"
+      style="display: none"
+      (change)="showPhoto($event)"
+    />
 
     <div class="form-group">
       <label for="role">Rôle</label>
-      <select id="role" class='form-control' formControlName="role">
+      <select id="role" class="form-control" formControlName="role">
         <option value="user">Utilisateur</option>
         <option value="admin">Administrateur</option>
       </select>
-
-
     </div>
-    <button class="btn btn-primary" type="submit" [disabled]="userForm.invalid">S'inscrire</button>
+    <button
+      class="btn btn-primary"
+      type="submit"
+      [disabled]="userForm.invalid"
+      *ngIf="!isRoleAdmin"
+    >
+      S'inscrire
+    </button>
+
+    <div class="form-group" *ngIf="isRoleAdmin">
+      <label for="passwordAdmin">Code confidentiel</label>
+      <input
+        type="password"
+        class="form-control"
+        id="passwordAdmin"
+        formControlName="passwordAdmin"
+      />
+    </div>
+
+    <button
+      class="btn btn-primary"
+      [disabled]="userForm.invalid"
+      *ngIf="isRoleAdmin"
+      (click)="onSubmitFormAdmin()"
+    >
+      S'inscrire en tant qu'admin
+    </button>
   </form>
   <div *ngIf="userAuth">Vous êtes connectés</div>
 </div>

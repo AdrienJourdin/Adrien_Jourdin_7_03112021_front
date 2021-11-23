@@ -69,13 +69,21 @@ export class UserService {
     )
   }
 
-  signup(user: Object) {
+  signup(user: string, imageUser:File) {
+
+    const userFormData = new FormData();
+
+
+      userFormData.append('user', user);
+
+      userFormData.append('image',imageUser);
     this.httpClient
-      .post('http://localhost:3000/api/user/signup', user)
+      .post('http://localhost:3000/api/user/signup', userFormData)
       .subscribe(
         () => {
           console.log('Enregistrement terminé !');
           this.router.navigate(['/login']);
+          this.alertService.success("Votre compte a bien été créé")
         },
         (error) => {
           this.alertService.error(error.message);

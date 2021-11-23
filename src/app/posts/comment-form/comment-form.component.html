@@ -1,0 +1,14 @@
+      <!--Le formulaire pour poster un commentaire-->
+      <form [formGroup]="commentForm" (ngSubmit)="onSubmitCommentForm(postId)" >
+
+        <div class="form-group">
+          <label for="content">Rediger un commentaire</label>
+          <input
+            type="text"
+            class="form-control"
+            id="content"
+            formControlName="content"
+          />
+        </div>
+        <button class="btn btn-primary" type="submit">Commenter</button>
+      </form>

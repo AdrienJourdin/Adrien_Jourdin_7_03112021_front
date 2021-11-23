@@ -4,11 +4,11 @@ import { User } from "./User.model";
 
 export interface Post{
 
-title:string;
 content:string;
 postId?:number;
 user?:User;
 comments?:Array<Comment>;
 likes?:Array<Like>;
+imageUrl?:string;
 
 }
