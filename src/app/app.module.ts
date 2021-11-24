@@ -21,6 +21,8 @@ import { ProfilComponent } from './auth/profil/profil.component';
 import { AlertComponent } from './alert/alert.component';
 import { PostFormComponent } from './posts/post-form/post-form.component';
 import { CommentFormComponent } from './posts/comment-form/comment-form.component';
+import { UpdatePostFormComponent } from './posts/update-post-form/update-post-form.component';
+import { UpdateCommentFormComponent } from './posts/update-comment-form/update-comment-form.component';
 
 
 const appRoutes: Routes = [
@@ -48,6 +50,8 @@ const appRoutes: Routes = [
     AlertComponent,
     PostFormComponent,
     CommentFormComponent,
+    UpdatePostFormComponent,
+    UpdateCommentFormComponent,
   ],
   imports: [
     BrowserModule,

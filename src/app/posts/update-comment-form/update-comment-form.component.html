@@ -1,0 +1,17 @@
+<button type="submit" (click)="updateComment(commentId)" *ngIf="loadButton(commentUserId)" class="btn btn-primary">
+  Modifier le commentaire
+</button>
+
+<form [formGroup]="updateCommentForm" (ngSubmit)="onSubmitUpdateCommentForm(commentId)" *ngIf="displayUpdateCommentButton(commentId)">
+  <div class="form-group">
+    <label for="content">Modification du commentaire</label>
+    <input
+      type="text"
+      class="form-control"
+      id="content"
+      formControlName="content"
+    />
+  </div>
+
+  <button class="btn btn-primary" type="submit">Publier la modification</button>
+</form>

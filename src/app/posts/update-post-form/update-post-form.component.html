@@ -1,0 +1,48 @@
+<button type="submit" (click)="updatePost(postId)" *ngIf="loadButton(postUserId)&&!displayUpdatePostButton(postId)" class="btn btn-primary">
+  Modifier la publication
+</button>
+<button type="submit" (click)="updatePost(postId)" *ngIf="loadButton(postUserId)&&displayUpdatePostButton(postId)" class="btn btn-primary">
+  Annuler la modification
+</button>
+<form [formGroup]="updatePostForm" (ngSubmit)="onSubmitUpdatePostForm(postId)" *ngIf="displayUpdatePostButton(postId)">
+
+  <div class="form-group">
+    <label for="content">Contenu</label>
+    <input
+      type="text"
+      class="form-control"
+      id="content"
+      formControlName="content"
+    />
+  </div>
+
+  <div class="imagePreview mb-3" *ngIf="imageUpdatePost && imageUpdatePost !== ''">
+    <img
+      [src]="imageUpdatePost"
+      class="imgPreview"
+      alt="image preview"
+      width="100"
+      height="100"
+    />
+  </div>
+
+  <!--Choix de l'image-->
+  <button
+    class="btn btn-secondary"
+    type="button"
+    onclick="document.getElementById('imageUpdatePost').click()"
+  >
+    Ajouter une image
+  </button>
+  <input
+    type="file"
+    accept="image/*"
+    id="imageUpdatePost"
+    style="display: none"
+    (change)="showUpdateImage($event)"
+  />
+
+
+
+  <button class="btn btn-primary" type="submit">Publier la modification</button>
+</form>

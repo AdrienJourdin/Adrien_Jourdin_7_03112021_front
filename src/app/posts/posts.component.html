@@ -9,7 +9,7 @@
       <p>{{ post.content }}</p>
       <img [src]="post.imageUrl" width="100" height="100" alt="photo de la publication">
       <p>de {{ post.user.firstName }} {{ post.user.lastName }}</p>
-
+      <img [src]="post.user.imageUrl" width="50" height="50" alt="photo de profil">
       <div>{{ post.likes.length }}</div>
 
 
@@ -27,27 +27,18 @@
       <button type="submit" (click)="deletePostConfirmation(post.id)" *ngIf="loadButton(post.user.id) && displayDeletePostButton(post.id)" class="btn btn-danger">
        Confirmer la suppression de la publication
       </button>
+      <app-update-post-form
+      [postId]="post.id"
+      [postUserId]="post.user.id"
+      [postContent]="post.content"
+      [imagePost]="post.imageUrl"
+      ></app-update-post-form>
 
-      <button type="submit" (click)="updatePost(post.id)" *ngIf="loadButton(post.user.id)" class="btn btn-primary">
-        Modifier la publication
-      </button>
 
-      <form [formGroup]="updatePostForm" (ngSubmit)="onSubmitUpdatePostForm(post.id)" *ngIf="displayUpdatePostButton(post.id)">
+      <app-comment-form
+      [postId]="post.id"
 
-        <div class="form-group">
-          <label for="content">Contenu</label>
-          <input
-            type="text"
-            class="form-control"
-            id="content"
-            formControlName="content"
-          />
-        </div>
-
-        <button class="btn btn-primary" type="submit">Publier la modification</button>
-      </form>
-
-      <app-comment-form [postId]="post.id" ></app-comment-form>
+      ></app-comment-form>
 
 
 
@@ -55,20 +46,12 @@
       <div *ngFor="let comment of post.comments">
         <p>{{ comment.content }}</p>
         <p>de {{ comment.user.firstName }} {{ comment.user.lastName }}</p>
+        <img [src]="comment.user.imageUrl" width="50" height="50" alt="photo de profil">
+        <app-update-comment-form
+        [commentId]="comment.id"
+        [commentUserId]="comment.user.id"
+        ></app-update-comment-form>
 
-        <form [formGroup]="updateCommentForm" (ngSubmit)="onSubmitUpdateCommentForm(comment.id)" *ngIf="displayUpdateCommentButton(comment.id)">
-          <div class="form-group">
-            <label for="content">Modification du commentaire</label>
-            <input
-              type="text"
-              class="form-control"
-              id="content"
-              formControlName="content"
-            />
-          </div>
-
-          <button class="btn btn-primary" type="submit">Publier la modification</button>
-        </form>
         <!--Les boutons de modif/supp des commentaires (si vous etes l'auteur du comment)-->
         <button type="submit" (click)="deleteComment(comment.id)" *ngIf="loadButton(comment.user.id)" class="btn btn-danger">
           Supprimer le commentaire
@@ -79,9 +62,7 @@
          Confirmer la suppression du commentaire
         </button>
 
-        <button type="submit" (click)="updateComment(comment.id)" *ngIf="loadButton(comment.user.id)" class="btn btn-primary">
-          Modifier le commentaire
-        </button>
+
 
 
 

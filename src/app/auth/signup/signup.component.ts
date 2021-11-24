@@ -93,7 +93,7 @@ export class SignupComponent implements OnInit {
     const file = event.target.files[0];
 
     this.userForm.patchValue({
-      imagePost: file
+      imageUser: file
     });
     this.userForm.get('imageUser')?.updateValueAndValidity()
     // File Preview

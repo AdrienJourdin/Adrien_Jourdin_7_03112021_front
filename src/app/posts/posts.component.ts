@@ -18,16 +18,16 @@ import { AuthService } from '../services/auth.service';
   styleUrls: ['./posts.component.sass'],
 })
 export class PostsComponent implements OnInit {
-  updatePostForm!: FormGroup;
-  updateCommentForm!: FormGroup;
+
+
 
   posts: any[] = [];
   postSubscription!: Subscription;
 
   userIsAuthor: boolean = false;
-  idPostToUpdate:number=0;
+
   idPostToDelete:number=0;
-  idCommentToUpdate:number=0;
+
   idCommentToDelete:number=0;
 
   constructor(
@@ -45,7 +45,7 @@ export class PostsComponent implements OnInit {
     );
     this.postsService.getLatestPosts();
     this.postsService.emitPosts();
-    this.initForm();
+
   }
 
   likeSubmit(id: number) {
@@ -53,22 +53,11 @@ export class PostsComponent implements OnInit {
     location.reload();
   }
 
-  initForm() {
 
-
-    this.updatePostForm = this.formBuilder.group({
-      title: [, Validators.required],
-      content: [, Validators.required],
-    });
-
-    this.updateCommentForm = this.formBuilder.group({
-      content: [, Validators.required],
-    });
-  }
 
 
   //Gestion des bouton de suppression et de modification des publications
-  loadButton(userId: string) {
+  loadButton(userId: number) {
     if(this.authService.currentUserValue.role==="admin"){
       return true;
     }
@@ -101,44 +90,10 @@ export class PostsComponent implements OnInit {
     location.reload();
   }
 
-  updatePost(postId:number) {
-    if(this.idPostToUpdate===postId){
-      this.idPostToUpdate=0;
-    }else{
-    this.idPostToUpdate=postId;
-    }
-  }
 
-  displayUpdatePostButton(postId:number){
-
-    if (this.idPostToUpdate===postId){
-      return true;
-    }else{
-      return false;
-    }
-  }
-
-  onSubmitUpdatePostForm(postId: number) {
-    const formValue = this.updatePostForm.value;
-    const postUpdate = {
-      title: formValue.title,
-      content: formValue.content,
-    };
-
-    this.postsService.updatePost(postId, postUpdate);
-    location.reload();
-  }
 
   //Gestion des bouton de suppression et de modification des commentaires
 
-  onSubmitUpdateCommentForm(commentId:number){
-    const formValue = this.updateCommentForm.value;
-
-      const content= formValue.content;
-
-    this.postsService.updateComment(commentId, content);
-    location.reload();
-  }
 
 
   deleteComment(commentId:number) {
@@ -163,22 +118,7 @@ export class PostsComponent implements OnInit {
     location.reload();
   }
 
-  updateComment(commentId:number) {
-    if(this.idCommentToUpdate===commentId){
-      this.idCommentToUpdate=0;
-    }else{
-    this.idCommentToUpdate=commentId;
-    }
-  }
 
-  displayUpdateCommentButton(commentId:number){
-
-    if (this.idCommentToUpdate===commentId){
-      return true;
-    }else{
-      return false;
-    }
-  }
 
 
 

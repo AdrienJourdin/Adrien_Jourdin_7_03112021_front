@@ -35,7 +35,7 @@ export class PostFormComponent implements OnInit {
     const imagePost = this.postForm.get('imagePost')?.value;
 
     this.postsService.postToAPI(content,imagePost);
-    //location.reload();
+    location.reload();
   }
 
   showImage(event: any) {

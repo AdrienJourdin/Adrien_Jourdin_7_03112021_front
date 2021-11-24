@@ -17,7 +17,7 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class ProfilComponent implements OnInit, OnDestroy {
   oneUser!: User;
-  oneUserSubscription!: Subscription;
+  user!:User;
 
   updateUserForm!: FormGroup;
   updateisActive: boolean = false;
@@ -31,14 +31,13 @@ export class ProfilComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.oneUserSubscription = this.userService.oneUserSubject.subscribe(
+/*     this.oneUserSubscription = this.userService.oneUserSubject.subscribe(
       (user: User) => {
         this.oneUser = user;
       }
-    );
+    ); */
 
-    this.userService.getOneUser();
-    this.userService.emitOneUser();
+    this.user=this.userService.getOneUser();
 
     this.updateUserForm = new FormGroup({
       firstName: new FormControl(),
@@ -93,7 +92,6 @@ export class ProfilComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.oneUserSubscription.unsubscribe();
     this.updateisActive = false;
   }
 

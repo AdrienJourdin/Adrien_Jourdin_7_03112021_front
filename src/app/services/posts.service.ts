@@ -44,9 +44,15 @@ export class PostsService {
       return this.alertService.error('Publication vide');
     }
     const postFormData = new FormData();
+      if(post==''){
+        postFormData.append('image', imagePost);
+      }else if(imagePost==null){
+        postFormData.append('post', post);
+      }else{
+        postFormData.append('image', imagePost);
+        postFormData.append('post', post);
+      }
 
-      postFormData.append('post', post);
-      postFormData.append('image', imagePost);
       console.log(postFormData.get('image'));
     this.httpClient.post(this.urlAPI + 'post', postFormData).subscribe(
       () => {
@@ -59,6 +65,7 @@ export class PostsService {
   }
 
   postLike(postId: number) {
+
     const body = {};
     this.httpClient
       .post(this.urlAPI + 'post/' + postId + '/like', body)
@@ -73,8 +80,9 @@ export class PostsService {
   }
 
   postComment(postId: number, content: Object) {
+    const postIdString=postId.toString();
     this.httpClient
-      .post(this.urlAPI + 'post/' + postId + '/comment', content)
+      .post(this.urlAPI + 'post/' + postIdString + '/comment', content)
       .subscribe(
         () => {
           this.alertService.success('Le commentaire a bien été publié');
@@ -85,8 +93,22 @@ export class PostsService {
       );
   }
 
-  updatePost(postId: number, content: Post) {
-    this.httpClient.put(this.urlAPI + 'post/' + postId, content).subscribe({
+  updatePost(postId: number, content: string,image:File) {
+    const postIdString=postId.toString();
+    if (content == null && image == null) {
+      return this.alertService.error('Publication vide');
+    }
+    const postUdpdateFormData = new FormData();
+      if(content==''){
+        postUdpdateFormData.append('image', image);
+      }else if(content==null){
+        postUdpdateFormData.append('content', content);
+      }else{
+        postUdpdateFormData.append('image', image);
+        postUdpdateFormData.append('content', content);
+      }
+      console.log(postUdpdateFormData.get('image'))
+    this.httpClient.put(this.urlAPI + 'post/' + postIdString, postUdpdateFormData).subscribe({
       next: (data) => {
         this.alertService.success('La publication a bien été modifiée');
       },
@@ -97,7 +119,8 @@ export class PostsService {
   }
 
   deletePost(postId: number) {
-    this.httpClient.delete(this.urlAPI + 'post/' + postId).subscribe({
+    const postIdString=postId.toString();
+    this.httpClient.delete(this.urlAPI + 'post/' + postIdString).subscribe({
       next: (data) => {
         this.alertService.success('La publication a bien été supprimée');
       },

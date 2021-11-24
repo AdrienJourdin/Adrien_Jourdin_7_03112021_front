@@ -1,7 +1,7 @@
 export interface Login {
 
 token:string;
-userId?:string;
+userId?:number;
 role?:string;
 
 }

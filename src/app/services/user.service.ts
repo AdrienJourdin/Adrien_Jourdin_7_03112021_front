@@ -54,13 +54,13 @@ export class UserService {
       return user;
   }
 
-  getOneUser(){
+  getOneUser():User|any{
     const currentUser=JSON.parse(localStorage.getItem('currentUser')||"");
     const userId=currentUser.userId;
     this.httpClient.get<User>('http://localhost:3000/api/user/'+userId).subscribe({
-      next:(data)=>{
+      next:(data:User)=>{
         this.oneUser=data;
-        this.emitOneUser();
+        return data;
       },
       error:(error)=>{
         this.alertService.error(error);
