@@ -23,7 +23,15 @@ import { PostFormComponent } from './posts/post-form/post-form.component';
 import { CommentFormComponent } from './posts/comment-form/comment-form.component';
 import { UpdatePostFormComponent } from './posts/update-post-form/update-post-form.component';
 import { UpdateCommentFormComponent } from './posts/update-comment-form/update-comment-form.component';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatSliderModule} from '@angular/material/slider';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatSelectModule} from '@angular/material/select';
+import {MatInputModule } from '@angular/material/input';
+import {MatButtonModule} from '@angular/material/button';
+import {MatCardModule} from '@angular/material/card'
+import {MatIconModule} from '@angular/material/icon';
+import {MatMenuModule} from '@angular/material/menu';
 
 const appRoutes: Routes = [
   { path: 'posts', component: PostsComponent },
@@ -60,7 +68,17 @@ const appRoutes: Routes = [
     RouterModule.forRoot(appRoutes),
     ReactiveFormsModule,
     HttpClientModule,
-    CoreModule
+    CoreModule,
+    BrowserAnimationsModule,
+    MatSliderModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule,
+    MatButtonModule,
+    MatCardModule,
+    MatIconModule,
+    MatMenuModule
+
   ],
   providers: [AuthService, PostsService, UserService, AuthGuard],
   bootstrap: [AppComponent],

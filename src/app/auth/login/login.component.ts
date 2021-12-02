@@ -46,7 +46,10 @@ onSubmitForm(){
 
     this.authService.login(email,password).subscribe(
       infos=>{
+
         this.router.navigate(['/posts']);
+
+        location.reload();
       }
     ,
     (error)=>{

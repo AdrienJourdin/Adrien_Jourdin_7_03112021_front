@@ -1,0 +1,14 @@
+.user{
+  margin:20px 0px;
+  &__photo{
+    order:-1;
+    border-radius: 50%;
+  }
+  &__name{
+    padding-top:12px
+  }
+
+  &__email{
+    padding-top:5px;
+  }
+}

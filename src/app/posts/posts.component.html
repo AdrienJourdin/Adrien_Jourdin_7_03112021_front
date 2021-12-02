@@ -1,73 +1,143 @@
 <!-- La page des publications-->
-<div >
+<div>
   <!--Le formulaire de création des publications -->
-<app-post-form></app-post-form>
-<!--LA liste des publications -->
-  <ul class="list-group">
-    <li class="list-group-item" *ngFor="let post of posts">
-      <!-- Le contenu de la publication-->
-      <p>{{ post.content }}</p>
-      <img [src]="post.imageUrl" width="100" height="100" alt="photo de la publication">
-      <p>de {{ post.user.firstName }} {{ post.user.lastName }}</p>
-      <img [src]="post.user.imageUrl" width="50" height="50" alt="photo de profil">
-      <div>{{ post.likes.length }}</div>
+  <app-post-form></app-post-form>
+  <!--LA liste des publications -->
+  <ul>
+    <li *ngFor="let post of posts">
+      <mat-card>
+        <mat-card-header>
+          <img
+            mat-card-sm-image
+            [src]="post.user.imageUrl"
+            alt="photo de profil"
+            class="profil_image"
+          />
+          <mat-card-title
+            >{{ post.user.firstName }} {{ post.user.lastName }}</mat-card-title
+          >
+        </mat-card-header>
+        <img
+          [src]="post.imageUrl"
+          mat-card-image
+          alt="photo de la publication"
+          class="post_image"
+        />
+        <mat-card-content>
+          <p>{{ post.content }}</p>
+        </mat-card-content>
+
+        <mat-card-actions>
+          <!--Le bouton de like -->
+          <div *ngIf="post.likes.length <= 1">
+            {{ post.likes.length }} personne aime cette publication
+          </div>
+          <div *ngIf="post.likes.length > 1">
+            {{ post.likes.length }} personnes aiment cette publication
+          </div>
+
+          <button
+            type="submit"
+            (click)="likeSubmit(post.id)"
+            class="bouton_like"
+            mat-icon-button
+          >
+            <mat-icon>favorite</mat-icon>
+          </button>
+
+          <!--Les boutons de suppression/modification du post (si vous etes l'auteur) -->
+          <button
+            type="submit"
+            (click)="deletePost(post.id)"
+            *ngIf="loadButton(post.user.id)"
+            class="btn btn-danger"
+          >
+            Supprimer le post
+          </button>
+
+          <div
+            *ngIf="loadButton(post.user.id) && displayDeletePostButton(post.id)"
+          >
+            Voulez-vous vraiment supprimer cette publication ?
+          </div>
+          <button
+            type="submit"
+            (click)="deletePostConfirmation(post.id)"
+            *ngIf="loadButton(post.user.id) && displayDeletePostButton(post.id)"
+            class="btn btn-danger"
+          >
+            Confirmer la suppression de la publication
+          </button>
+          <app-update-post-form
+            [postId]="post.id"
+            [postUserId]="post.user.id"
+            [postContent]="post.content"
+            [imagePost]="post.imageUrl"
+          ></app-update-post-form>
+
+          <app-comment-form [postId]="post.id"></app-comment-form>
+
+          <!-- La liste des commentaires -->
+
+          <div *ngFor="let comment of post.comments">
+            <mat-card class="comment">
+              <mat-card-header>
+                <div class="comment__author">
+                  {{ comment.user.firstName }} {{ comment.user.lastName }}
+                </div>
+                <img
+                [src]="comment.user.imageUrl"
+                width="50"
+                height="50"
+                alt="photo de profil"
+                mat-card-sm-image
+                class="comment__photo"
+              />
+
+                </mat-card-header
+              >
+
+              <mat-card-content class="comment__content">{{ comment.content }}</mat-card-content>
 
 
-      <!--Le bouton de like -->
-      <button type="submit" (click)="likeSubmit(post.id)" class="btn">
-        Like
-      </button>
+              <app-update-comment-form
+                [commentId]="comment.id"
+                [commentUserId]="comment.user.id"
+              ></app-update-comment-form>
 
-      <!--Les boutons de suppression/modification du post (si vous etes l'auteur) -->
-      <button type="submit" (click)="deletePost(post.id)" *ngIf="loadButton(post.user.id)" class="btn btn-danger">
-        Supprimer le post
-      </button>
+              <!--Les boutons de modif/supp des commentaires (si vous etes l'auteur du comment)-->
+              <button
+                type="submit"
+                (click)="deleteComment(comment.id)"
+                *ngIf="loadButton(comment.user.id)"
+                class="btn btn-danger"
+              >
+                Supprimer le commentaire
+              </button>
 
-      <div *ngIf="loadButton(post.user.id) && displayDeletePostButton(post.id)">Voulez-vous vraiment supprimer cette publication ?</div>
-      <button type="submit" (click)="deletePostConfirmation(post.id)" *ngIf="loadButton(post.user.id) && displayDeletePostButton(post.id)" class="btn btn-danger">
-       Confirmer la suppression de la publication
-      </button>
-      <app-update-post-form
-      [postId]="post.id"
-      [postUserId]="post.user.id"
-      [postContent]="post.content"
-      [imagePost]="post.imageUrl"
-      ></app-update-post-form>
-
-
-      <app-comment-form
-      [postId]="post.id"
-
-      ></app-comment-form>
-
-
-
-<!-- La liste des commentaires -->
-      <div *ngFor="let comment of post.comments">
-        <p>{{ comment.content }}</p>
-        <p>de {{ comment.user.firstName }} {{ comment.user.lastName }}</p>
-        <img [src]="comment.user.imageUrl" width="50" height="50" alt="photo de profil">
-        <app-update-comment-form
-        [commentId]="comment.id"
-        [commentUserId]="comment.user.id"
-        ></app-update-comment-form>
-
-        <!--Les boutons de modif/supp des commentaires (si vous etes l'auteur du comment)-->
-        <button type="submit" (click)="deleteComment(comment.id)" *ngIf="loadButton(comment.user.id)" class="btn btn-danger">
-          Supprimer le commentaire
-        </button>
-
-        <div *ngIf="loadButton(comment.user.id) && displayDeleteCommentButton(comment.id)">Voulez-vous vraiment supprimer votre commentaire ?</div>
-        <button type="submit" (click)="deleteCommentConfirmation(comment.id)" *ngIf="loadButton(comment.user.id) && displayDeleteCommentButton(comment.id)" class="btn btn-danger">
-         Confirmer la suppression du commentaire
-        </button>
-
-
-
-
-
-      </div>
-
+              <div
+                *ngIf="
+                  loadButton(comment.user.id) &&
+                  displayDeleteCommentButton(comment.id)
+                "
+              >
+                Voulez-vous vraiment supprimer votre commentaire ?
+              </div>
+              <button
+                type="submit"
+                (click)="deleteCommentConfirmation(comment.id)"
+                *ngIf="
+                  loadButton(comment.user.id) &&
+                  displayDeleteCommentButton(comment.id)
+                "
+                class="btn btn-danger"
+              >
+                Confirmer la suppression du commentaire
+              </button>
+            </mat-card>
+          </div>
+        </mat-card-actions>
+      </mat-card>
     </li>
   </ul>
 </div>

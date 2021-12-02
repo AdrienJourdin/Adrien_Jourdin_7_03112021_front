@@ -13,39 +13,66 @@ import { AuthService } from 'src/app/services/auth.service';
 @Component({
   selector: 'app-profil',
   templateUrl: './profil.component.html',
-  styleUrls: ['./profil.component.sass'],
+  styleUrls: ['./profil.component.scss'],
 })
 export class ProfilComponent implements OnInit, OnDestroy {
   oneUser!: User;
-  user!:User;
-
+  user!: User;
+  oneUserSubscription!: Subscription;
   updateUserForm!: FormGroup;
   updateisActive: boolean = false;
   deleteConfirmation: boolean = false;
+  imageUpdateUser?: string;
+
+  isFocus: any = {
+    firstName: false,
+    lastName: false,
+    email: false,
+    password: false,
+    passwordValidation: false,
+  };
 
   constructor(
     private userService: UserService,
     private formBuilder: FormBuilder,
     private router: Router,
-    private authService:AuthService
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
-/*     this.oneUserSubscription = this.userService.oneUserSubject.subscribe(
+    this.oneUserSubscription = this.userService.oneUserSubject.subscribe(
       (user: User) => {
         this.oneUser = user;
+        console.log(user);
       }
-    ); */
+    );
 
-    this.user=this.userService.getOneUser();
+    this.userService.getOneUser();
+    this.onInitForm();
+  }
 
+  onInitForm() {
     this.updateUserForm = new FormGroup({
-      firstName: new FormControl(),
-      lastName:new FormControl(),
-      email:new FormControl(),
-      password:new FormControl(),
+      firstName: new FormControl('', [
+        Validators.required,
+        Validators.minLength(3),
+      ]),
+      lastName: new FormControl('', [
+        Validators.required,
+        Validators.minLength(3),
+      ]),
+      email: new FormControl('', [Validators.required, Validators.email]),
+      password: new FormControl('', [
+        Validators.required,
+        Validators.pattern(
+          /^(?=[^A-Z]*[A-Z])(?=[^a-z]*[a-z])(?=[^0-9]*[0-9])(?=.*[!@#$%^&*]).{8,20}$/
+        ),
+      ]),
+      passwordValidation: new FormControl('', [Validators.required]),
+      imageUser: new FormControl(null),
+      role: new FormControl('', Validators.required),
+      passwordAdmin: new FormControl(''),
     });
-
   }
 
   activeUpdate() {
@@ -91,11 +118,49 @@ export class ProfilComponent implements OnInit, OnDestroy {
     }
   }
 
+  showPhotoUpdate(event: any) {
+    const file = event.target.files[0];
+
+    this.updateUserForm.patchValue({
+      imageUser: file,
+    });
+    this.updateUserForm.get('imageUserUpdate')?.updateValueAndValidity();
+    // File Preview
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.imageUpdateUser = reader.result as string;
+    };
+    reader.readAsDataURL(file);
+  }
+
   ngOnDestroy(): void {
     this.updateisActive = false;
   }
 
-  logout(){
+  logout() {
     this.authService.logout();
+  }
+
+  get firstName() {
+    return this.updateUserForm.get('firstName');
+  }
+  get lastName() {
+    return this.updateUserForm.get('lastName');
+  }
+  get email() {
+    return this.updateUserForm.get('email');
+  }
+  get password() {
+    return this.updateUserForm.get('password');
+  }
+  get passwordValidation() {
+    return this.updateUserForm.get('passwordValidation');
+  }
+
+  inputFocus(field: string) {
+    this.isFocus[field] = true;
+  }
+  inputBlur(field: string) {
+    this.isFocus[field] = false;
   }
 }

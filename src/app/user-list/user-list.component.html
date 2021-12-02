@@ -1,10 +1,16 @@
-<ul class="list-group">
-  <li class="list-group-item" *ngFor="let user of users"  >
+<div class="user_list">
+  <div  *ngFor="let user of users"  >
+    <mat-card class="user">
+    <mat-card-header class="user__header">
+      <p class="user__name">{{ user.firstName }} {{ user.lastName }} </p>
+      <img [src]="user.imageUrl" width="50" height="50" alt="photo de profil" class="user__photo">
+    </mat-card-header>
+    <mat-card-content class="user__content">
+      <p class="user__role">{{ user.role }}</p>
+    <p class="user__email">{{ user.email }}</p>
+    </mat-card-content>
 
-    <h3>{{ user.firstName }} {{ user.lastName }}</h3>
-    <p>{{ user.role }}</p>
-    <p>{{ user.email }}</p>
-    <img [src]="user.imageUrl" width="50" height="50" alt="photo de profil">
+  </mat-card>
 
-  </li>
-</ul>
+</div>
+</div>

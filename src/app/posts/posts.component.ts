@@ -15,7 +15,7 @@ import { AuthService } from '../services/auth.service';
 @Component({
   selector: 'app-posts',
   templateUrl: './posts.component.html',
-  styleUrls: ['./posts.component.sass'],
+  styleUrls: ['./posts.component.scss'],
 })
 export class PostsComponent implements OnInit {
 

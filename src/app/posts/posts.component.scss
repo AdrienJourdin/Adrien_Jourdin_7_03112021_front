@@ -1,0 +1,57 @@
+.profil_image{
+  background-size:cover;
+  border-radius: 50%;
+  width:50px;
+  height:50px;
+  order:-1;
+
+}
+mat-card-header{
+  padding-bottom:10px;
+}
+mat-card-title{
+  padding-top: 12px;
+}
+mat-card-content > p{
+  font-size: 1.2em;
+}
+li{
+  list-style: none;
+  margin-bottom:20px;
+}
+
+.bouton_like{
+  background-color: white;
+  &:hover{
+    color: #1976d2
+
+    ;
+
+  }
+}
+
+.comment{
+  margin-top: 10px;
+  border-radius: 10px;
+  background-color: #e2f1f8;
+
+  &__photo{
+    background-size:cover;
+    border-radius: 50%;
+    width:40px;
+    height:40px;
+    order:-1;
+  }
+
+  &__author{
+    font-weight: bold;
+    padding-top:10px;
+  }
+
+  &__content{
+    margin-left: 90px;
+  }
+
+
+}
+

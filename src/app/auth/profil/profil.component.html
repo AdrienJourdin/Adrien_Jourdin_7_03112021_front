@@ -1,52 +1,158 @@
-<div class="col-md-4">
 
-  <div>
-    <div>
-      {{user.firstName}}
-    </div>
-    <div>
-      {{user.lastName}}
-    </div>
-    <div>
-      {{user.email}}
-    </div>
-  </div>
+<div class="col-md-4">
+  <mat-card class="user">
+    <mat-card-header class="user__header">
+      <p class="user__name">
+      {{ oneUser.firstName }}  {{ oneUser.lastName }}
+      </p>
+          <img [src]="oneUser.imageUrl" width="50" height="50" alt="photo de profil" class="user__photo">
+    </mat-card-header>
+    <mat-card-content class="user__email">
+      {{ oneUser.email }}
+    </mat-card-content>
+
+  </mat-card>
 
   <div class="col-sm-8 col-sm-offset-2" *ngIf="updateisActive">
-    <form [formGroup]="updateUserForm" (ngSubmit)="onSubmitForm()">
-      <div class="form-group">
-        <label for="firstName">Prénom</label>
-        <input type="text" class=form-control id="firstName" formControlName="firstName">
-      </div>
+      <form [formGroup]="updateUserForm" (ngSubmit)="onSubmitForm()">
+        <div class="form-group">
+          <label for="firstName">Prénom</label>
+          <input
+            type="text"
+            class="form-control"
+            id="firstName"
+            formControlName="firstName"
+            (focus)="inputFocus('firstName')"
+            (blur)="inputBlur('firstName')"
+          />
+          <div *ngIf="firstName?.errors && isFocus['firstName']">
+            Le prénom doit contenir minimum 2 caractère
+          </div>
+        </div>
 
-      <div class="form-group">
-        <label for="lastName">Nom</label>
-        <input type="text" class=form-control id="lastName" formControlName="lastName">
-      </div>
+        <div class="form-group">
+          <label for="lastName">Nom</label>
+          <input
+            type="text"
+            class="form-control"
+            id="lastName"
+            formControlName="lastName"
+            (focus)="inputFocus('lastName')"
+            (blur)="inputBlur('lastName')"
+          />
+        </div>
+        <div *ngIf="lastName?.errors && isFocus['lastName']">
+          Le nom de famille doit contenir minimum 2 caractère
+        </div>
 
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input type="text" class=form-control id="email" formControlName="email">
-      </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            type="text"
+            class="form-control"
+            id="email"
+            formControlName="email"
+            (focus)="inputFocus('email')"
+            (blur)="inputBlur('email')"
+          />
+        </div>
+        <div *ngIf="email?.errors && isFocus['email']">Email incorrect</div>
 
-      <div class="form-group">
-        <label for="password">Mot de passe</label>
-        <input type="password" class=form-control id="password" formControlName="password">
-      </div>
+        <div class="form-group">
+          <label for="password">Mot de passe</label>
+          <input
+            type="password"
+            class="form-control"
+            id="password"
+            formControlName="password"
+            (focus)="inputFocus('password')"
+            (blur)="inputBlur('password')"
+          />
+        </div>
+        <div *ngIf="password?.errors && isFocus['password']">
+          Le mot de passe doit contenir une lettre minuscule, une lettre
+          majuscule, un chiffre et un caractère spécial
+        </div>
 
-      <button class="btn btn-primary" type="submit" [disabled]="updateUserForm.invalid">Envoi des modifications</button>
-    </form>
+        <div class="form-group">
+          <label for="passwordValidation">confirmation du mot de passe</label>
+          <input
+            type="password"
+            class="form-control"
+            id="passwordValidation"
+            formControlName="passwordValidation"
+            (focus)="inputFocus('passwordValidation')"
+            (blur)="inputBlur('passwordValidation')"
+          />
+        </div>
+        <div
+          *ngIf="passwordValidation?.errors && isFocus['passwordValidation']"
+        >
+          La confirmation du mot de passe doit être identique au mot de passe
+          rentré précédement
+        </div>
+
+        <!--Prévisualisation de la photo de profil-->
+        <div
+          class="imagePreview mb-3"
+          *ngIf="imageUpdateUser && imageUpdateUser !== ''"
+        >
+          <img
+            [src]="imageUpdateUser"
+            class="imgPreview"
+            alt="image preview"
+            width="100"
+            height="100"
+          />
+        </div>
+
+        <!--Choix de l'image-->
+        <button
+          class="btn btn-primary"
+          type="button"
+          onclick="document.getElementById('imageUpdateUser').click()"
+        >
+          Ajouter une photo de profil
+        </button>
+
+        <input
+          type="file"
+          accept="image/*"
+          id="imageUser"
+          style="display: none"
+          (change)="showPhotoUpdate($event)"
+        />
+
+        <button class="btn btn-primary" type="submit">
+          Confirmer la modification du profil
+        </button>
+      </form>
     </div>
 
+<!--     <button class="btn btn-primary" (click)="activeUpdate()">
+      Modifier votre profil
+    </button> -->
 
-<button class='btn btn-primary' (click)="activeUpdate()">
-Modifier votre profil
-</button>
+    <button
+      class="btn btn-primary"
+      (click)="deleteUserConfirmation()"
+      *ngIf="!deleteConfirmation"
+    >
+      Supprimer votre Profil
+    </button>
 
-<button class='btn btn-primary' (click)="deleteUserConfirmation()" *ngIf="!deleteConfirmation">Supprimer votre Profil</button>
-<div *ngIf="deleteConfirmation">Etes -vous sur de vouloir supprimer votre profil ? Cette action est définitive.</div>
-<button class='btn btn-primary' (click)="deleteUser()" *ngIf="deleteConfirmation">Confirmer la suppression de votre profil</button>
+    <div *ngIf="deleteConfirmation">
+      Etes -vous sur de vouloir supprimer votre profil ? Cette action est
+      définitive.
+    </div>
+    <button
+      class="btn btn-primary"
+      (click)="deleteUser()"
+      *ngIf="deleteConfirmation"
+    >
+      Confirmer la suppression de votre profil
+    </button>
 
+    <button class="btn btn-danger" (click)="logout()">Se deconnecter</button>
 
-<button class="btn btn-danger" (click)="logout()">Se deconnecter</button>
 </div>
