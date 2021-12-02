@@ -37,7 +37,7 @@ export class UserService {
         this.emitUsers();
       },
       (error) => {
-        this.alertService.error(error);
+        this.alertService.error(error.error.message);
       }
     );
   }
@@ -59,7 +59,7 @@ export class UserService {
           this.emitOneUser();
         },
         error: (error) => {
-          this.alertService.error(error);
+          this.alertService.error(error.error.message);
         },
       });
   }
@@ -77,7 +77,8 @@ export class UserService {
           this.alertService.success('Votre compte a bien été créé');
         },
         (error) => {
-          this.alertService.error(error.message);
+          console.log(error);
+          this.alertService.error(error.error.message);
         }
       );
   }
@@ -93,7 +94,7 @@ export class UserService {
           this.router.navigate(['/login']);
         },
         error: (error) => {
-          this.alertService.error(error.message);
+          this.alertService.error(error.error.message);
         },
       });
   }
@@ -101,7 +102,7 @@ export class UserService {
   updateUser(user: User) {
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || '');
     const userId = currentUser.userId;
-    console.log(userId);
+
     this.httpClient
       .put('http://localhost:3000/api/user/' + userId, user)
       .subscribe({
@@ -109,7 +110,7 @@ export class UserService {
           console.log('Profil modifié');
         },
         error: (error) => {
-          this.alertService.error(error.message);
+          this.alertService.error(error.error.message);
         },
       });
   }

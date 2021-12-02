@@ -53,13 +53,12 @@ export class PostsService {
         postFormData.append('post', post);
       }
 
-      console.log(postFormData.get('image'));
     this.httpClient.post(this.urlAPI + 'post', postFormData).subscribe(
       () => {
         this.alertService.success('Le post a bien été publié');
       },
       (error) => {
-        this.alertService.error(error.message);
+        this.alertService.error(error.error.message);
       }
     );
   }
@@ -74,7 +73,7 @@ export class PostsService {
           this.alertService.success('Le post a bien été liké');
         },
         (error) => {
-          this.alertService.error(error.message);
+          this.alertService.error(error.error.message);
         }
       );
   }
@@ -88,7 +87,7 @@ export class PostsService {
           this.alertService.success('Le commentaire a bien été publié');
         },
         (error) => {
-          this.alertService.error(error.message);
+          this.alertService.error(error.error.message);
         }
       );
   }
@@ -113,7 +112,7 @@ export class PostsService {
         this.alertService.success('La publication a bien été modifiée');
       },
       error: (error) => {
-        this.alertService.error(error.message);
+        this.alertService.error(error.error.message);
       },
     });
   }
@@ -125,7 +124,7 @@ export class PostsService {
         this.alertService.success('La publication a bien été supprimée');
       },
       error: (error) => {
-        this.alertService.error(error.message);
+        this.alertService.error(error.error.message);
       },
     });
   }
@@ -138,7 +137,7 @@ export class PostsService {
           this.alertService.success('Le commentaire a bien été modifié');
         },
         error: (error) => {
-          this.alertService.error(error.message);
+          this.alertService.error(error.error.message);
         },
       });
   }
@@ -151,7 +150,7 @@ export class PostsService {
           this.alertService.success('Le commentaire a bien été supprimé');
         },
         error: (error) => {
-          this.alertService.error(error.message);
+          this.alertService.error(error.error.message);
         },
       });
   }

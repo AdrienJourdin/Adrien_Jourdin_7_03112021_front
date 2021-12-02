@@ -53,7 +53,8 @@ onSubmitForm(){
       }
     ,
     (error)=>{
-      this.alertService.error(error);
+      console.log(error);
+      this.alertService.error(error.error.error);
     }
 
     )

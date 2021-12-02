@@ -41,7 +41,6 @@ export class SignupComponent implements OnInit {
   ngOnInit(): void {
     this.initForm();
     this.userAuth = this.authService.isAuth();
-    console.log(this.f);
   }
   get f() {
     return this.userForm.controls;
@@ -67,7 +66,8 @@ export class SignupComponent implements OnInit {
       imageUser: new FormControl('',[Validators.required]),
       role:new FormControl('',[
         Validators.required
-      ])
+      ]),
+      passwordAdmin:new FormControl('',[])
     });
   }
 
@@ -119,7 +119,6 @@ export class SignupComponent implements OnInit {
       });
 
       const image = this.userForm.get('imageUser')?.value;
-      console.log(image);
       this.userService.signup(newUser, image);
       this.alertService.success('Votre compte a bien été créé');
     } else {
