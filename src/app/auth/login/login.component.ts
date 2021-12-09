@@ -49,7 +49,6 @@ onSubmitForm(){
 
         this.router.navigate(['/posts']);
 
-        location.reload();
       }
     ,
     (error)=>{

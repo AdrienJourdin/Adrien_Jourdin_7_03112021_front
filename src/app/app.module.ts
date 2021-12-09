@@ -34,7 +34,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatMenuModule} from '@angular/material/menu';
 
 const appRoutes: Routes = [
-  { path: 'posts', component: PostsComponent },
+  { path: 'posts',canActivate: [AuthGuard], component: PostsComponent },
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
   { path: '', canActivate: [AuthGuard],component: PostsComponent },
